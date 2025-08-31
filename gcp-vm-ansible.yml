@@ -1,0 +1,44 @@
+- name: Setp 1 :create VM
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: create vm #創建vm
+      include_tasks: tasks-vm/create_new_vm.yml
+    - name: Get VM info #取得vm機器資訊
+      include_tasks: tasks-vm/vm_info.yml
+    - name: Set VM IP #取得vm ip
+      include_tasks: tasks-vm/set_vm_Internal_ip.yml
+    - name: Add VM to inventory  #新增跳板機ip至inventory
+      include_tasks: tasks-ssh/ssh_to_vm.yml
+    - name: Pause 30s before trying SSH #等待30秒
+      include_tasks: tasks-ssh/wait_30s.yml
+
+- name: Step 2 :Deploy env on VM
+  hosts: new_vm
+  gather_facts: no
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: Wait for SSH to become available  #等待vm創好後,透過跳板機連線至新vm
+      include_tasks: tasks-ssh/wait_for_connection.yml
+    - name: Create dir and files #指令1
+      include_tasks: tasks-command/create_file.yml
+    - name: Install Node.js & PM2 #指令2
+      include_tasks: tasks-command/install.yml
+
+- name: Setp 3 :Stop VM, create image, and restart VM
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: stop VM  #關閉vm
+      include_tasks: tasks-vm/stop_vm.yml
+    - name: Create image from VM boot disk #創建image
+      include_tasks: tasks-vm/create_image.yml
+    - name: start VM #開啟vm
+      include_tasks: tasks-vm/start_vm.yml
