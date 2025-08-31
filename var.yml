@@ -1,0 +1,32 @@
+#VM參數設定
+project: "silver-impulse-462505-s4"
+vm_name: "test-ansible-vm3"   #創新機名稱
+zone: "asia-east1-c"
+region: "asia-east1"
+machine_type: "e2-medium"
+image: "projects/silver-impulse-462505-s4/global/images/joe-vm-test-v2"
+network: "joe-vpc-1"
+subnetwork: "joe-test2"
+
+#git版本設定： 直接填寫版本，ex:v1.45.10
+#backend
+ant_ag_version: ""
+ant_api_version: ""
+ant_intg_version: ""
+ant_bo_version: ""
+ant_chat_version: ""
+ant_socket_version: ""
+ant_work_version: ""
+
+#frontend
+ant_gc_version: ""
+clinet_ag_version: ""
+client_bo_version: ""
+
+#image檔名設定
+custom_image_name: "joe-vm-test-v4"
+
+#VM ssh for password
+ssh_user: "root"
+ssh_pass: "12345678"
+jump_host: "34.81.200.90" #跳板機IP
