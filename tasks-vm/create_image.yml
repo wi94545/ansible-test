@@ -1,0 +1,6 @@
+- name: Create image
+  ansible.builtin.shell: |
+    gcloud compute images create {{ custom_image_name }} \
+      --source-disk={{ vm_name }} \
+      --source-disk-zone={{ zone }} \
+      --project={{ project }}

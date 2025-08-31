@@ -1,0 +1,19 @@
+- name: change api git version
+  ansible.builtin.shell: |
+    pm2 delete ~/ant-bu/ecosystem.config.js --only api || true
+    git fetch --all
+    git checkout {{ ant_api_version }}
+    npm i
+    pm2 start ~/ant-bu/ecosystem.config.js --only api
+  args:
+    chdir: ~/ant-api  #指定目錄
+  when: ant_api_version != ""
+  #ignore_errors: true  #忽略錯誤
+
+- name: check ant-api current git version
+  ansible.builtin.shell: |
+    git branch
+  args:
+    chdir: ~/ant-api
+  changed_when: false #指定目錄
+  when: ant_api_version != ""

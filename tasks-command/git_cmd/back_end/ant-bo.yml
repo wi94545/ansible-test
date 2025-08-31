@@ -1,0 +1,19 @@
+- name: change bo git version
+  ansible.builtin.shell: |
+    pm2 delete ~/ant-bu/ecosystem.config.js --only bo || true
+    git fetch --all
+    git checkout {{ ant_bo_version }}
+    npm i
+    pm2 start ~/ant-bu/ecosystem.config.js --only bo
+  args:
+    chdir: ~/ant-bo  #指定目錄
+  when: ant_bo_version != ""
+  #ignore_errors: true  #忽略錯誤
+
+- name: check ant-bo current git version
+  ansible.builtin.shell: |
+    git branch
+  args:
+    chdir: ~/ant-bo
+  changed_when: false #指定目錄
+  when: ant_bo_version != ""

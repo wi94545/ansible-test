@@ -1,0 +1,10 @@
+- name: ssh-to-vm
+  add_host:
+    name: "{{ vm_ip }}"
+    groups: new_vm
+    ansible_user: "{{ ssh_user }}"
+    ansible_password: "{{ ssh_pass }}"
+    ansible_ssh_common_args: >
+      -o StrictHostKeyChecking=no
+      -o UserKnownHostsFile=/dev/null
+      -o ProxyCommand="sshpass -p '{{ ssh_pass }}' ssh -W %h:%p -o StrictHostKeyChecking=no root@{{ jump_host }}"

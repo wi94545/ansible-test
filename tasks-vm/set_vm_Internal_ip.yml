@@ -1,0 +1,4 @@
+    - name: Set VM IP
+      set_fact:
+        vm_ip: "{{ vm_info.resources[0].networkInterfaces[0].networkIP }}"  #取得Internal IP
+        # vm_ip: "{{ vm_info.resources[0].networkInterfaces[0].accessConfigs[0].natIP }}" #取得External IP

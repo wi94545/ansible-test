@@ -1,0 +1,20 @@
+- name: create new_vm
+  google.cloud.gcp_compute_instance:
+    auth_kind: serviceaccount
+    service_account_file: "./gcp-sa.json"
+    project: "{{ project }}"
+    zone: "{{ zone }}"
+    name: "{{ vm_name }}"
+    machine_type: "{{ machine_type }}"
+
+    disks:
+      - auto_delete: true
+        boot: true
+        initialize_params:
+          source_image: "{{ image }}"
+
+    network_interfaces:
+      - network:
+          selfLink: "projects/{{ project }}/global/networks/{{ network }}"
+        subnetwork:
+          selfLink: "projects/{{ project }}/regions/{{ region }}/subnetworks/{{ subnetwork }}"

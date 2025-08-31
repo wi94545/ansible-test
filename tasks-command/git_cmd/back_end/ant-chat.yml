@@ -1,0 +1,19 @@
+- name: change chat git version
+  ansible.builtin.shell: |
+    pm2 delete ~/ant-bu/ecosystem.config.js --only chat || true
+    git fetch --all
+    git checkout {{ ant_chat_version }}
+    npm i
+    pm2 start ~/ant-bu/ecosystem.config.js --only chat
+  args:
+    chdir: ~/ant-chat  #指定目錄
+  when: ant_chat_version != ""
+  #ignore_errors: true  #忽略錯誤
+
+- name: check ant-chat current git version
+  ansible.builtin.shell: |
+    git branch
+  args:
+    chdir: ~/ant-chat
+  changed_when: false #指定目錄
+  when: ant_chat_version != ""

@@ -1,0 +1,3 @@
+- name: Stop VM
+  ansible.builtin.shell: |
+    gcloud compute instances stop {{ vm_name }} --zone {{ zone }} --project {{ project }}

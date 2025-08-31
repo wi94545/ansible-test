@@ -1,0 +1,19 @@
+- name: change ag git version
+  ansible.builtin.shell: |
+    pm2 delete ~/ant-bu/ecosystem.config.js --only ag || true
+    git fetch --all
+    git checkout {{ ant_ag_version }}
+    npm i
+    pm2 start ~/ant-bu/ecosystem.config.js --only ag
+  args:
+    chdir: ~/ant-ag  #指定目錄
+  when: ant_ag_version != ""
+  #ignore_errors: true  #忽略錯誤
+
+- name: check ant-ag current git version
+  ansible.builtin.shell: |
+    git branch
+  args:
+    chdir: ~/ant-ag
+  changed_when: false #指定目錄
+  when: ant_ag_version != ""

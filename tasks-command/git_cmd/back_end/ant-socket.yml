@@ -1,0 +1,19 @@
+- name: change socket git version
+  ansible.builtin.shell: |
+    pm2 delete ~/ant-bu/ecosystem.config.js --only socket || true
+    git fetch --all
+    git checkout {{ ant_socket_version }}
+    npm i
+    pm2 start ~/ant-bu/ecosystem.config.js --only socket
+  args:
+    chdir: ~/ant-socket  #指定目錄
+  when: ant_socket_version != ""
+  #ignore_errors: true  #忽略錯誤
+
+- name: check ant-socket current git version
+  ansible.builtin.shell: |
+    git branch
+  args:
+    chdir: ~/ant-socket
+  changed_when: false #指定目錄
+  when: ant_socket_version != ""

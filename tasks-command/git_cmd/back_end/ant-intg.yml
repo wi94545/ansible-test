@@ -1,0 +1,19 @@
+- name: change intg git version
+  ansible.builtin.shell: |
+    pm2 delete ~/ant-bu/ecosystem.config.js --only intg || true
+    git fetch --all
+    git checkout {{ ant_intg_version }}
+    npm i
+    pm2 start ~/ant-bu/ecosystem.config.js --only intg
+  args:
+    chdir: ~/ant-intg  #指定目錄
+  when: ant_intg_version != ""
+  #ignore_errors: true  #忽略錯誤
+
+- name: check ant-intg current git version
+  ansible.builtin.shell: |
+    git branch
+  args:
+    chdir: ~/ant-intg
+  changed_when: false #指定目錄
+  when: ant_intg_version != ""

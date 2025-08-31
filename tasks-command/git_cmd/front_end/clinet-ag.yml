@@ -1,0 +1,19 @@
+- name: change clinet-ag git version
+  ansible.builtin.shell: |
+    git fetch --all
+    git checkout {{ clinet_ag_version }}
+    npm i
+    set NODE_OPTIONS=--max-old-space-size=4096
+    npm run build
+  args:
+    chdir: ~/clinet-ag  #指定目錄
+  when: clinet_ag_version != ""
+  #ignore_errors: true  #忽略錯誤
+
+- name: check ant-gc current git version
+  ansible.builtin.shell: |
+    git branch
+  args:
+    chdir: ~/clinet-ag
+  changed_when: false #指定目錄
+  when: clinet_ag_version != ""

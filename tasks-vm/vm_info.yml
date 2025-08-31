@@ -1,0 +1,9 @@
+- name: Get VM info #取得新機器資訊
+  google.cloud.gcp_compute_instance_info:
+    auth_kind: serviceaccount
+    service_account_file: "./gcp-sa.json"
+    project: "{{ project }}"
+    zone: "{{ zone }}"
+    filters:
+      - "name={{ vm_name }}"
+  register: vm_info

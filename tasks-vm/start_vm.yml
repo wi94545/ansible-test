@@ -1,0 +1,3 @@
+- name: Start VM
+  ansible.builtin.shell: |
+    gcloud compute instances start {{ vm_name }} --zone {{ zone }} --project {{ project }}

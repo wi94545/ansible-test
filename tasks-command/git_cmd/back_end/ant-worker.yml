@@ -1,0 +1,18 @@
+- name: change worker git version
+  ansible.builtin.shell: |
+    docker compose down || true
+    git fetch --all
+    git checkout {{ ant_worker_version }}
+    docker compose up -d
+  args:
+    chdir: ~/ant-work  #指定目錄
+  when: ant_worker_version != ""
+  #ignore_errors: true  #忽略錯誤
+
+- name: check ant-work current container status
+  ansible.builtin.shell: |
+    docker compose ps
+  args:
+    chdir: ~/ant-work
+  changed_when: false #指定目錄
+  when: ant_worker_version != ""
